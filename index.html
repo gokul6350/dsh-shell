@@ -3,13 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terminal Chat App</title>
+    <title>Deep Shell 🐚</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+    <script>
+        // Define global addTerminalOutput function
+        function addTerminalOutput(text) {
+            const terminalOutput = document.getElementById('terminalOutput');
+            if (terminalOutput) {
+                const outputElement = document.createElement('div');
+                outputElement.textContent = text;
+                terminalOutput.appendChild(outputElement);
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            }
+        }
+
+        // Initialize Qt web channel
+        new QWebChannel(qt.webChannelTransport, function(channel) {
+            window.terminal = channel.objects.terminal;
+        });
+    </script>
+    <script src="script.js" defer></script>
 </head>
 <body>
     <div class="app-container">
         <div class="chat-container">
+            <div class="chat-header">
+                <h1 class="chat-title">
+                    Deep Shell 🐚
+                </h1>
+            </div>
             <div class="chat-messages" id="chatMessages"></div>
             <form class="chat-input-form" id="chatForm">
                 <input type="text" id="chatInput" placeholder="Type your message..." class="chat-input">
@@ -37,7 +61,6 @@
             </form>
         </div>
     </div>
-    <script src="script.js"></script>
 </body>
 </html>
 

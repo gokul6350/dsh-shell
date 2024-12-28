@@ -19,7 +19,8 @@ body {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
-    height: 100vh;
+    min-height: 100vh;
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,20 +28,20 @@ body {
 
 .app-container {
     display: flex;
-    width: 100%;
-    height: 100%;
-    max-width: 1200px;
-    max-height: 800px;
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    max-height: none;
     background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
     overflow: hidden;
 }
 
 .chat-container {
-    width: 33.33%;
+    flex: 1;
     display: flex;
     flex-direction: column;
     border-right: 1px solid var(--border-color);
+    min-width: 300px;
 }
 
 .chat-messages {
@@ -98,9 +99,10 @@ body {
 }
 
 .terminal-container {
-    width: 66.67%;
+    flex: 2;
     display: flex;
     flex-direction: column;
+    min-width: 400px;
 }
 
 .terminal-header {
@@ -180,5 +182,20 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #718096;
+}
+
+.chat-header {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.chat-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 

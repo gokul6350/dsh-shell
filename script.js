@@ -35,26 +35,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const command = terminalInput.value.trim();
         if (command) {
             addTerminalOutput(`$ ${command}`);
-            addTerminalOutput('Command executed (simulated)');
+            window.terminal.send_command(command);
             terminalInput.value = '';
         }
     });
 
-    function addTerminalOutput(text) {
-        const outputElement = document.createElement('div');
-        outputElement.textContent = text;
-        terminalOutput.appendChild(outputElement);
-        terminalOutput.scrollTop = terminalOutput.scrollHeight;
-    }
-
     // Reset terminal
     resetButton.addEventListener('click', () => {
-        terminalOutput.innerHTML = '';
-        addTerminalOutput('Welcome to the modern terminal!');
+        // Clear the input field
+        terminalInput.value = '';
+        
+        // Reset the terminal process
+        window.terminal.reset_terminal();
     });
 
     // Initial terminal message
-    addTerminalOutput('Welcome to the modern terminal!');
+    addTerminalOutput('Welcome to the Ai terminal!');
 
     // Initial chat message
     addChatMessage("Hello! How can I assist you with the terminal today?", 'ai');
