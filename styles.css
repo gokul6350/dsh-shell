@@ -1,0 +1,184 @@
+:root {
+    --bg-color: #111;
+    --text-color: #e2e8f0;
+    --border-color: #333;
+    --input-bg: #222;
+    --chat-user-bg: #333;
+    --chat-ai-bg: #222;
+    --button-bg: #333;
+    --button-hover-bg: #444;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.app-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    max-width: 1200px;
+    max-height: 800px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.chat-container {
+    width: 33.33%;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-color);
+}
+
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+.chat-message {
+    max-width: 80%;
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    word-wrap: break-word;
+}
+
+.chat-message.user {
+    background-color: var(--chat-user-bg);
+    align-self: flex-end;
+    margin-left: auto;
+}
+
+.chat-message.ai {
+    background-color: var(--chat-ai-bg);
+    align-self: flex-start;
+}
+
+.chat-input-form {
+    display: flex;
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.chat-input {
+    flex-grow: 1;
+    background-color: var(--input-bg);
+    border: none;
+    padding: 0.5rem 1rem;
+    color: var(--text-color);
+    border-radius: 4px 0 0 4px;
+}
+
+.chat-send-button {
+    background-color: var(--button-bg);
+    border: none;
+    color: var(--text-color);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 0 4px 4px 0;
+    transition: background-color 0.3s ease;
+}
+
+.chat-send-button:hover {
+    background-color: var(--button-hover-bg);
+}
+
+.terminal-container {
+    width: 66.67%;
+    display: flex;
+    flex-direction: column;
+}
+
+.terminal-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem;
+}
+
+.reset-button {
+    background-color: var(--button-bg);
+    border: none;
+    color: var(--text-color);
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.reset-button:hover {
+    background-color: var(--button-hover-bg);
+    transform: translateY(-2px);
+}
+
+.terminal-output {
+    flex-grow: 1;
+    background-color: rgba(0, 0, 0, 0.3);
+    margin: 0 1rem;
+    border-radius: 8px;
+    padding: 1rem;
+    font-family: monospace;
+    overflow-y: auto;
+}
+
+.terminal-input-form {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.3);
+    margin: 1rem;
+    border-radius: 8px;
+}
+
+.terminal-prompt {
+    color: #4fd1c5;
+    margin-right: 0.5rem;
+}
+
+.terminal-input {
+    flex-grow: 1;
+    background-color: transparent;
+    border: none;
+    color: var(--text-color);
+    font-family: monospace;
+}
+
+.terminal-input:focus {
+    outline: none;
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1a202c;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #4a5568;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #718096;
+}
+
