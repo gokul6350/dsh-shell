@@ -1,0 +1,14 @@
+# Core Dependencies
+PyQt5
+PyQtWebEngine
+google-generativeai
+
+# Web Dependencies
+websockets
+
+# Development Tools
+python-dotenv
+
+# Optional Dependencies
+colorama  # For terminal colors
+requests  # For HTTP requests 

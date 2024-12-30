@@ -8,16 +8,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetButton = document.getElementById('resetButton');
 
     // Chat functionality
-    chatForm.addEventListener('submit', (e) => {
+    chatForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const message = chatInput.value.trim();
         if (message) {
             addChatMessage(message, 'user');
+            // Log user message to Python console
+            window.terminal.log_chat_message(message, 'user');
             chatInput.value = '';
-            // Simulate AI response
-            setTimeout(() => {
-                addChatMessage("I've received your message. How else can I help?", 'ai');
-            }, 1000);
+            
+            // Disable input while processing
+            chatInput.disabled = true;
+            addChatMessage("Processing...", 'ai');
+
+            // Set up one-time event listener for Python response
+            await new Promise(resolve => {
+                window.terminal.response_ready.connect((command, speech) => {
+                    // Remove "Processing..." message
+                    chatMessages.removeChild(chatMessages.lastChild);
+                    
+                    // Add AI response
+                    addChatMessage(speech, 'ai');
+                    
+                    // If there's a command, execute it in terminal
+                    if (command) {
+                        addTerminalOutput(`$ ${command}`);
+                        window.terminal.send_command(command);
+                    }
+                    
+                    resolve();
+                });
+                
+                // Send message to Python
+                window.terminal.process_chat_message(message);
+            });
+            
+            // Re-enable input
+            chatInput.disabled = false;
         }
     });
 
