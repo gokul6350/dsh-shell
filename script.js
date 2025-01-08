@@ -1,85 +1,59 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const chatMessages = document.getElementById('chatMessages');
-    const chatForm = document.getElementById('chatForm');
-    const chatInput = document.getElementById('chatInput');
-    const terminalOutput = document.getElementById('terminalOutput');
-    const terminalForm = document.getElementById('terminalForm');
-    const terminalInput = document.getElementById('terminalInput');
-    const resetButton = document.getElementById('resetButton');
+    const chatPanel = document.querySelector('.chat-panel');
+    const messageInput = document.querySelector('#chatInput');
+    const sendButton = document.querySelector('.send-button');
+
+    // Initialize Qt web channel
+    new QWebChannel(qt.webChannelTransport, function(channel) {
+        window.terminal = channel.objects.terminal;
+    });
 
     // Chat functionality
-    chatForm.addEventListener('submit', async (e) => {
+    function addChatMessage(text, sender) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message', sender);
+        messageElement.textContent = text;
+        messageInput.parentElement.insertBefore(messageElement, messageInput.parentElement);
+        chatPanel.scrollTop = chatPanel.scrollHeight;
+    }
+
+    async function handleChatSubmit(e) {
         e.preventDefault();
-        const message = chatInput.value.trim();
+        const message = messageInput.value.trim();
         if (message) {
             addChatMessage(message, 'user');
-            // Log user message to Python console
             window.terminal.log_chat_message(message, 'user');
-            chatInput.value = '';
+            messageInput.value = '';
             
-            // Disable input while processing
-            chatInput.disabled = true;
-            addChatMessage("Processing...", 'ai');
+            messageInput.disabled = true;
+            addChatMessage("Processing...", 'assistant');
 
-            // Set up one-time event listener for Python response
             await new Promise(resolve => {
                 window.terminal.response_ready.connect((command, speech) => {
                     // Remove "Processing..." message
-                    chatMessages.removeChild(chatMessages.lastChild);
+                    chatPanel.removeChild(chatPanel.lastChild);
                     
-                    // Add AI response
-                    addChatMessage(speech, 'ai');
+                    addChatMessage(speech, 'assistant');
                     
-                    // If there's a command, execute it in terminal
                     if (command) {
-                        addTerminalOutput(`$ ${command}`);
+                        // Send command directly to the embedded terminal
                         window.terminal.send_command(command);
                     }
                     
                     resolve();
                 });
                 
-                // Send message to Python
                 window.terminal.process_chat_message(message);
             });
             
-            // Re-enable input
-            chatInput.disabled = false;
+            messageInput.disabled = false;
         }
-    });
-
-    function addChatMessage(text, sender) {
-        const messageElement = document.createElement('div');
-        messageElement.classList.add('chat-message', sender);
-        messageElement.textContent = text;
-        chatMessages.appendChild(messageElement);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    // Terminal functionality
-    terminalForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const command = terminalInput.value.trim();
-        if (command) {
-            addTerminalOutput(`$ ${command}`);
-            window.terminal.send_command(command);
-            terminalInput.value = '';
-        }
+    // Event listeners
+    sendButton.addEventListener('click', handleChatSubmit);
+    messageInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleChatSubmit(e);
     });
-
-    // Reset terminal
-    resetButton.addEventListener('click', () => {
-        // Clear the input field
-        terminalInput.value = '';
-        
-        // Reset the terminal process
-        window.terminal.reset_terminal();
-    });
-
-    // Initial terminal message
-    addTerminalOutput('Welcome to the Ai terminal!');
-
-    // Initial chat message
-    addChatMessage("Hello! How can I assist you with the terminal today?", 'ai');
 });
 

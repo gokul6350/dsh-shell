@@ -3,64 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deep Shell 🐚</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>Modern Terminal</title>
     <link rel="stylesheet" href="styles.css">
     <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
-    <script>
-        // Define global addTerminalOutput function
-        function addTerminalOutput(text) {
-            const terminalOutput = document.getElementById('terminalOutput');
-            if (terminalOutput) {
-                const outputElement = document.createElement('div');
-                outputElement.textContent = text;
-                terminalOutput.appendChild(outputElement);
-                terminalOutput.scrollTop = terminalOutput.scrollHeight;
-            }
-        }
-
-        // Initialize Qt web channel
-        new QWebChannel(qt.webChannelTransport, function(channel) {
-            window.terminal = channel.objects.terminal;
-        });
-    </script>
-    <script src="script.js" defer></script>
 </head>
 <body>
-    <div class="app-container">
-        <div class="chat-container">
-            <div class="chat-header">
-                <h1 class="chat-title">
-                    Deep Shell 🐚
-                </h1>
+    <div class="container">
+        <div class="chat-panel">
+            <div class="message assistant">
+                Hello! How can I assist you with the terminal today?
             </div>
-            <div class="chat-messages" id="chatMessages"></div>
-            <form class="chat-input-form" id="chatForm">
-                <input type="text" id="chatInput" placeholder="Type your message..." class="chat-input">
-                <button type="submit" class="chat-send-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="22" y1="2" x2="11" y2="13"></line>
-                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                    </svg>
-                </button>
-            </form>
-        </div>
-        <div class="terminal-container">
-            <div class="terminal-header">
-                <button id="resetButton" class="reset-button" aria-label="Reset Terminal">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 2v6h6"></path>
-                        <path d="M3 13a9 9 0 1 0 3-7.7L3 8"></path>
+            <div class="message-input">
+                <input type="text" id="chatInput" placeholder="Type your message...">
+                <button class="send-button">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
                     </svg>
                 </button>
             </div>
-            <div class="terminal-output" id="terminalOutput"></div>
-            <form class="terminal-input-form" id="terminalForm">
-                <span class="terminal-prompt">$</span>
-                <input type="text" id="terminalInput" class="terminal-input">
-            </form>
         </div>
+        <!-- <div class="terminal-panel">
+            <div class="terminal-content" id="terminalOutput">
+                Welcome to the modern terminal!
+            </div>
+            <div class="terminal-input">
+                <span class="prompt">$</span>
+                <input type="text" id="terminalInput" class="command-input">
+            </div>
+        </div> -->
     </div>
+    <script src="script.js" defer></script>
 </body>
 </html>
 

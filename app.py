@@ -1,63 +1,27 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QSplashScreen, QVBoxLayout, QSplitter
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtCore import QUrl, Qt, QProcess, pyqtSlot, QObject, pyqtSignal
 from PyQt5.QtWebChannel import QWebChannel
 import os
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QPixmap
 import cmd_agent
 import json
+import debugpy
+from terminal_widget import TerminalWidget
 
 
 
 class TerminalBridge(QObject):
-    # Signal to send response back to JavaScript
-    response_ready = pyqtSignal(str, str)  # For command and speech
+    response_ready = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.start_terminal()
+        self.page = None
     
-    def start_terminal(self):
-        # Initialize terminal process
-        self.process = QProcess()
-        self.process.setProgram("cmd.exe")
-        self.process.readyReadStandardOutput.connect(self.handle_output)
-        self.process.readyReadStandardError.connect(self.handle_error)
-        self.process.start()
-        
-    @pyqtSlot(str)
-    def send_command(self, command):
-        self.process.write((command + '\n').encode())
-        
-    def handle_output(self):
-        data = self.process.readAllStandardOutput().data().decode()
-        # Send output to JavaScript
-        self.page.runJavaScript(f'addTerminalOutput(`{data.strip()}`)')
-        
-    def handle_error(self):
-        data = self.process.readAllStandardError().data().decode()
-        self.page.runJavaScript(f'addTerminalOutput(`{data.strip()}`)')
-        
-    @pyqtSlot()
-    def reset_terminal(self):
-        # Kill the current process
-        if self.process:
-            self.process.kill()
-            self.process.waitForFinished()
-            
-        # Clear the terminal output in JavaScript
-        self.page.runJavaScript('terminalOutput.innerHTML = ""')
-        
-        # Start a new terminal process
-        self.start_terminal()
-        
-        # Add welcome message
-        self.page.runJavaScript('addTerminalOutput("Terminal has been reset. Welcome to the new session!")')
-        
     @pyqtSlot(str, str)
     def log_chat_message(self, message, sender):
-        print(f"[{sender}]: {message}")  # This will print to IDE console
+        print(f"[{sender}]: {message}")
 
     def ask_commandline(self, message):
         response = cmd_agent.ask_agent_cmd(message)
@@ -66,22 +30,19 @@ class TerminalBridge(QObject):
     @pyqtSlot(str)
     def process_chat_message(self, message):
         try:
-            # Get response from cmd_agent
             response = cmd_agent.ask_agent_cmd(message)
-            # Parse the JSON response after escaping backslashes
             response = response.replace('\\', '\\\\')
             response_dict = json.loads(response)
             
-            print(f"Parsed response: {response_dict}")  # Debug print
+            print(f"Parsed response: {response_dict}")
             
-            # Send both command and speech back to JavaScript
             self.response_ready.emit(
                 response_dict.get("run", ""), 
                 response_dict.get("speak", "No response")
             )
         except json.JSONDecodeError as je:
             print(f"JSON parsing error: {je}")
-            print(f"Raw response: {response}")  # Debug print
+            print(f"Raw response: {response}")
             self.response_ready.emit("", "Sorry, I had trouble understanding the response")
         except Exception as e:
             print(f"Error processing message: {e}")
@@ -106,6 +67,26 @@ class MainWindow(QMainWindow):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
         
+        # Create splitter for web view and terminal
+        self.splitter = QSplitter(Qt.Horizontal)
+        self.splitter.setStyleSheet("""
+            QSplitter::handle {
+                background: #2c2e33;
+                width: 2px;
+                margin-top: 0px;
+                margin-bottom: 0px;
+            }
+            QSplitter::handle:hover {
+                background: #3c3e43;
+            }
+            QSplitter::handle:pressed {
+                background: #4c4e53;
+            }
+        """)
+        
+        # Make the splitter handle more visible
+        self.splitter.setHandleWidth(2)
+        
         # Create web view widget
         self.web_view = QWebEngineView()
         
@@ -123,13 +104,42 @@ class MainWindow(QMainWindow):
         index_path = os.path.join(current_dir, 'index.html')
         self.web_view.setUrl(QUrl.fromLocalFile(index_path))
         
-        # Add web view to layout
-        layout.addWidget(self.web_view)
+        # Create terminal widget
+        self.terminal = TerminalWidget()
+        
+        # Add widgets to splitter
+        self.splitter.addWidget(self.web_view)
+        self.splitter.addWidget(self.terminal)
+        
+        # Set initial sizes (adjust the ratio as needed)
+        self.splitter.setSizes([int(self.width() * 0.6), int(self.width() * 0.4)])
+        
+        # Add splitter to layout
+        layout.addWidget(self.splitter)
 
 def main():
+    # Enable debugging on port 5678
+    try:
+        debugpy.listen(5678)
+        print("Debugger is listening on port 5678")
+    except Exception as e:
+        print(f"Debugger failed to start: {e}")
+        
     app = QApplication(sys.argv)
+    
+    # Show splash screen
+    splash_pix = QPixmap('logo.png')
+    splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
+    splash.show()
+    app.processEvents()
+    
+    # Initialize main window
     window = MainWindow()
+    
+    # Show main window and close splash
     window.show()
+    splash.finish(window)
+    
     sys.exit(app.exec_())
 
 if __name__ == '__main__':

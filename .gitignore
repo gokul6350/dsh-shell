@@ -38,6 +38,3 @@ config.py
 # OS specific
 .DS_Store
 Thumbs.db 
-
-# Exclude large binary files
-!assets/screenshot.png 
