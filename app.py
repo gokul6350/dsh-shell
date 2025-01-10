@@ -18,10 +18,25 @@ class TerminalBridge(QObject):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.page = None
+        self.terminal = None  # Will store reference to terminal widget
     
     @pyqtSlot(str, str)
     def log_chat_message(self, message, sender):
-        print(f"[{sender}]: {message}")
+        # Simple logging, can be removed if not needed
+        pass
+    
+    @pyqtSlot(str)
+    def send_command(self, command):
+        """Simulate typing and execute command in terminal"""
+        if self.terminal and self.terminal.process.state() == QProcess.Running:
+            # Write the command to terminal
+            self.terminal.process.write(command.encode())
+            # Simulate Enter key press
+            self.terminal.process.write(b'\r\n')
+            
+            # Add to terminal's command history
+            self.terminal.command_history.append(command)
+            self.terminal.history_index = len(self.terminal.command_history)
 
     def ask_commandline(self, message):
         response = cmd_agent.ask_agent_cmd(message)
@@ -47,6 +62,13 @@ class TerminalBridge(QObject):
         except Exception as e:
             print(f"Error processing message: {e}")
             self.response_ready.emit("", f"Sorry, I encountered an error: {str(e)}")
+
+    @pyqtSlot()
+    def reset_terminal(self):
+        """Reset the terminal"""
+        if self.terminal:
+            self.terminal.clear()  # Clear terminal content
+            self.terminal.start_process()  # Restart the process
 
 
 
@@ -106,6 +128,9 @@ class MainWindow(QMainWindow):
         
         # Create terminal widget
         self.terminal = TerminalWidget()
+        
+        # Connect terminal to bridge
+        self.terminal_bridge.terminal = self.terminal
         
         # Add widgets to splitter
         self.splitter.addWidget(self.web_view)

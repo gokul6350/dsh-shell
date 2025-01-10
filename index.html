@@ -9,28 +9,33 @@
 </head>
 <body>
     <div class="container">
+        <div class="top-bar">
+            <div class="app-info">
+                <img src="logo.png" alt="Deep Shell" class="app-logo">
+                <span class="app-name"> Deep Shell </span>
+            </div>
+            <button class="reset-button" title="Reset Terminal">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9a9 9 0 00-9-9m9 9h-9"/>
+                </svg>
+            </button>
+        </div>
         <div class="chat-panel">
-            <div class="message assistant">
-                Hello! How can I assist you with the terminal today?
+            <div class="messages-container">
+                <div class="message assistant">
+                    👋 Hello! How can I assist you with the terminal today?
+                </div>
             </div>
             <div class="message-input">
-                <input type="text" id="chatInput" placeholder="Type your message...">
+                <input type="text" id="chatInput" placeholder="Ask me anything about the terminal...">
                 <button class="send-button">
-                    <svg viewBox="0 0 24 24" width="24" height="24">
-                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m22 2-7 20-4-9-9-4Z"></path>
+                        <path d="M22 2 11 13"></path>
                     </svg>
                 </button>
             </div>
         </div>
-        <!-- <div class="terminal-panel">
-            <div class="terminal-content" id="terminalOutput">
-                Welcome to the modern terminal!
-            </div>
-            <div class="terminal-input">
-                <span class="prompt">$</span>
-                <input type="text" id="terminalInput" class="command-input">
-            </div>
-        </div> -->
     </div>
     <script src="script.js" defer></script>
 </body>

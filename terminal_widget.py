@@ -60,21 +60,38 @@ class TerminalWidget(QPlainTextEdit):
                 background-color: #1a1b1e;
             }
             QScrollBar:vertical {
-                width: 8px;
+                width: 6px;
                 background: #1a1b1e;
             }
             QScrollBar::handle:vertical {
                 background: #2c2e33;
-                border-radius: 4px;
+                border-radius: 3px;
             }
             QScrollBar::handle:vertical:hover {
                 background: #3c3e43;
             }
-            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
-                height: 0px;
+            QScrollBar:horizontal {
+                height: 6px;
+                background: #1a1b1e;
             }
-            QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+            QScrollBar::handle:horizontal {
+                background: #2c2e33;
+                border-radius: 3px;
+            }
+            QScrollBar::handle:horizontal:hover {
+                background: #3c3e43;
+            }
+            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical,
+            QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+                height: 0px;
+                width: 0px;
+            }
+            QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical,
+            QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
                 background: none;
+            }
+            QScrollBar::corner {
+                background: #1a1b1e;
             }
         """)
 
