@@ -4,7 +4,7 @@ Deep Shell is an intelligent terminal application that combines a chat interface
 
 
 
-![Deep Shell Preview](https://github.com/gokul6350/dsh-shell/blob/main/screen_shots/Screenshot%202024-12-30%20154936.png?raw=true)
+![Deep Shell Preview](https://github.com/gokul6350/dsh-shell/blob/main/screen_shots/Screenshot%202025-01-11%20010517.png?raw=true)
 
 ## Features
 
