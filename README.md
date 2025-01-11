@@ -22,7 +22,7 @@ Deep Shell is an intelligent terminal application that combines a chat interface
 
 ## TODO
 
-- [ ] Fix terminal direct input handling
+- [X] Fix terminal direct input handling
 - [ ] Add Agent B for command result processing
 - [ ] Add settings button and configuration panel
 - [ ] Implement transparent and blur window features
