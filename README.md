@@ -83,6 +83,8 @@ Deep Shell is an intelligent terminal application that combines a chat interface
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
+![Alt](https://repobeats.axiom.co/api/embed/c9b5ec4073d100e9fd865ad1872ff07a0578caf6.svg "Repobeats analytics image")
+
 ## License
 
 [Add your license here] 
