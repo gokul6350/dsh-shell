@@ -1,30 +1,13 @@
 import os
 import platform
-import google.generativeai as genai
-import config
+from llm_manager import LLMManager
 
-genai.configure(api_key=config.GEMINI_API_KEY)
-
-# Create the model
-generation_config = {
-  "temperature": 1,
-  "top_p": 0.95,
-  "top_k": 40,
-  "max_output_tokens": 8192,
-  
-}
-
-model = genai.GenerativeModel(
-  model_name="gemini-2.0-flash-exp",
-  generation_config=generation_config,
- # system_instruction = f"""
-#You are a helpful command line expert for {platform.system()} systems. You should only reply with JSON that contains two keys: "run" and "speak" to answer the user's question. The "run" key will contain the command to execute, and the "speak" key will contain any verbal response.
-    #  """
-)
+# Initialize the LLM manager
+llm_manager = LLMManager()
 
 
-def ask_agent_cmd(input):
-    response = model.generate_content([
+async def ask_agent_cmd(input):
+    response = await llm_manager.generate_response([
   "input: input",
   "output: output",
   "input: list all dir",
