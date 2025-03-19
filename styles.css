@@ -344,6 +344,11 @@ input:disabled {
     flex-shrink: 0;
 }
 
+.top-bar-buttons {
+    display: flex;
+    gap: 10px;
+}
+
 .app-info {
     display: flex;
     align-items: center;
@@ -362,7 +367,7 @@ input:disabled {
     color: #e4e4e4;
 }
 
-.reset-button {
+.reset-button, .settings-button {
     background: #2c2e33;
     border: none;
     color: #e4e4e4;
@@ -376,12 +381,12 @@ input:disabled {
     transition: all 0.2s ease;
 }
 
-.reset-button:hover {
+.reset-button:hover, .settings-button:hover {
     background: #3c3e43;
     color: #4fd1c5;
 }
 
-.reset-button svg {
+.reset-button svg, .settings-button svg {
     transition: transform 0.3s ease;
 }
 

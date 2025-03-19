@@ -130,6 +130,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Enter') handleChatSubmit(e);
     });
 
+    // Add settings button functionality
+    const settingsButton = document.querySelector('.settings-button');
+    settingsButton.addEventListener('click', () => {
+        if (window.terminal) {
+            window.terminal.show_settings();
+        }
+    });
+
     // Add reset button functionality
     const resetButton = document.querySelector('.reset-button');
     resetButton.addEventListener('click', () => {
