@@ -1,8 +1,8 @@
 # Deep Shell 🐚
 
+> **Note:** For the Linux version, see [@gokul6350/DeepShell4](https://github.com/gokul6350/DeepShell4)
+
 Deep Shell is an intelligent terminal application that combines a chat interface with a command-line interface, powered by Google's Gemini AI. It helps users execute terminal commands through natural language conversations.
-
-
 
 ![Deep Shell Preview](https://github.com/gokul6350/dsh-shell/blob/main/screen_shots/Screenshot%202025-01-11%20010517.png?raw=true)
 
@@ -36,8 +36,6 @@ Deep Shell is an intelligent terminal application that combines a chat interface
 - Python 3.x
 - Qt framework
 - Google Gemini API key
-
-
 
 ## Installation
 
